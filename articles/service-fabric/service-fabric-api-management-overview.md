@@ -60,7 +60,9 @@ Similar to the stateless service scenario, traffic can be forwarded to a statefu
 
 In the following scenario, a Service Fabric application contains a partitioned stateful service named `fabric:/app/userservice` that exposes an internal HTTP API. The service instance name is well known and can be hard-coded directly in the API Management inbound processing policy.  
 
-The service is partitioned using the Int64 partition scheme with two partitions and a key range that spans `Int64.MinValue` to `Int64.MaxValue`. The back-end policy computes a partition key within that range by converting the `id` value provided in the URL request path to a 64-bit integer, although any algorithm can be used here to compute the partition key. 
+The service is partitioned using the Int64 partition scheme with two partitions and a key range that spans `Int64.MinValue` to `Int64.MaxValue`. The back-end policy computes a partition key within that range by converting the `id` value provided in the URL request path to a 64-bit integer, although any algorithm can be used here to compute the partition key.
+
+There are more possible partitioning schemas i.e. Int64, Named and Singleton. The schema that API Management will use to call the service is determined by the type returned by the expression passed to 'sf-partition-key' attribute. If passed expression returns 'Int64' then Int64 partitioning scheme will be use if it is 'string' than Named partitioning scheme will be use and if no value is provided for 'sf-partition-key' attribute then Singleton partitioning scheme will be used. The expression return type must match the actual partitioning scheme of the target service.
 
 ![Service Fabric with Azure API Management topology overview][sf-apim-static-stateful]
 
